@@ -1,5 +1,3 @@
-DELIMITER $$
-
 CREATE PROCEDURE GetAllInstructeurs()
 BEGIN
     SELECT 
@@ -7,8 +5,7 @@ BEGIN
         mobiel,
         datum_in_dienst,
         aantal_sterren
-    FROM instructeurs;
-END$$
-
-DELIMITER ;
+    FROM instructeurs
+    ORDER BY aantal_sterren DESC; 
+END;
 
