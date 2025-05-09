@@ -1,4 +1,4 @@
-
+<!-- filepath: c:\Users\denni\Herd\be-opdracht-07\resources\views\instructeurs\voertuigen.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -21,16 +21,17 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Placeholder rows -->
-            <tr>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td><button class="btn btn-warning">✏️</button></td>
-            </tr>
+            @foreach ($voertuigen as $voertuig)
+                <tr>
+                    <td>{{ $voertuig->TypeVoertuig }}</td>
+                    <td>{{ $voertuig->Type }}</td>
+                    <td>{{ $voertuig->Kenteken }}</td>
+                    <td>{{ $voertuig->Bouwjaar }}</td>
+                    <td>{{ $voertuig->Brandstof }}</td>
+                    <td>{{ $voertuig->Rijbewijscategorie }}</td>
+                    <td><button class="btn btn-warning">✏️</button></td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 </div>

@@ -18,8 +18,16 @@ class InstructeurController extends Controller
 
     public function voertuigen($id)
     {
+        // Fetch the instructor's details
         $instructeur = DB::table('instructeurs')->where('id', $id)->first();
 
-        return view('instructeurs.voertuigen', ['instructeur' => $instructeur]);
+        // Fetch the vehicles assigned to the instructor using the stored procedure
+        $voertuigen = DB::select('CALL GetAllVoertuigen(?)', [$id]);
+
+        // Pass the data to the view
+        return view('instructeurs.voertuigen', [
+            'instructeur' => $instructeur,
+            'voertuigen' => $voertuigen
+        ]);
     }
 }
