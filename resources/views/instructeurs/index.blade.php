@@ -21,7 +21,9 @@
                     <td>{{ $instructeur->mobiel }}</td>
                     <td>{{ $instructeur->datum_in_dienst }}</td>
                     <td>{{ $instructeur->aantal_sterren }}</td>
-                    <td>🚗</td>
+                    <td>
+                        <a href="{{ route('instructeurs.voertuigen', $instructeur->id) }}">🚗</a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

@@ -15,4 +15,11 @@ class InstructeurController extends Controller
         // Pass the data to the view
         return view('instructeurs.index', compact('instructeurs'));
     }
+
+    public function voertuigen($id)
+    {
+        $instructeur = DB::table('instructeurs')->where('id', $id)->first();
+
+        return view('instructeurs.voertuigen', ['instructeur' => $instructeur]);
+    }
 }

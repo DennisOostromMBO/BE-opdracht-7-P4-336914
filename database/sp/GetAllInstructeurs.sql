@@ -1,6 +1,7 @@
 CREATE PROCEDURE GetAllInstructeurs()
 BEGIN
     SELECT 
+        id, 
         CONCAT_WS(' ', voornaam, tussenvoegsel, achternaam) AS naam,
         mobiel,
         datum_in_dienst,
