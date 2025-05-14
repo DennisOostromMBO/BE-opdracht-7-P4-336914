@@ -29,7 +29,9 @@
                     <td>{{ $voertuig->Bouwjaar }}</td>
                     <td>{{ $voertuig->Brandstof }}</td>
                     <td>{{ $voertuig->Rijbewijscategorie }}</td>
-                    <td><button class="btn btn-warning">✏️</button></td>
+                    <td>
+                        <a href="{{ route('voertuigen.edit', ['id' => $instructeur->id, 'voertuig' => $voertuig->id]) }}" class="btn btn-warning">✏️</a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

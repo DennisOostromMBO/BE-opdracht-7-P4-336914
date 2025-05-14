@@ -9,25 +9,49 @@ class InstructeurController extends Controller
 {
     public function index()
     {
-        // Call the stored procedure
+        // Fetch all instructors using a stored procedure
         $instructeurs = DB::select('CALL GetAllInstructeurs()');
 
-        // Pass the data to the view
         return view('instructeurs.index', compact('instructeurs'));
     }
 
     public function voertuigen($id)
     {
-        // Fetch the instructor's details
-        $instructeur = DB::table('instructeurs')->where('id', $id)->first();
-
-        // Fetch the vehicles assigned to the instructor using the stored procedure
+        // Fetch instructor details and vehicles using stored procedures
+        $instructeur = DB::select('CALL GetInstructeurById(?)', [$id])[0] ?? abort(404, 'Instructeur not found.');
         $voertuigen = DB::select('CALL GetAllVoertuigen(?)', [$id]);
 
-        // Pass the data to the view
-        return view('instructeurs.voertuigen', [
-            'instructeur' => $instructeur,
-            'voertuigen' => $voertuigen
+        return view('instructeurs.voertuigen', compact('instructeur', 'voertuigen'));
+    }
+
+    public function editVoertuig($id, $voertuig)
+    {
+        // Fetch vehicle details and types using stored procedures
+        $voertuig = DB::select('CALL GetVoertuigById(?)', [$voertuig])[0] ?? abort(404, 'Voertuig not found.');
+
+        // Ensure instructeur_id matches
+        if ($voertuig->instructeur_id != $id) {
+            abort(404, 'Voertuig does not belong to this instructeur.');
+        }
+
+        $typeVoertuigen = DB::select('CALL GetAllTypeVoertuigen()');
+
+        return view('voertuigen.edit', compact('voertuig', 'typeVoertuigen'));
+    }
+
+    public function updateVoertuig(Request $request, $id)
+    {
+        // Update vehicle details using a stored procedure
+        DB::statement('CALL UpdateVoertuig(?, ?, ?, ?, ?, ?)', [
+            $id,
+            $request->type_voertuig_id,
+            $request->type,
+            $request->bouwjaar,
+            $request->brandstof,
+            $request->kenteken
         ]);
+
+        return redirect()->route('instructeurs.voertuigen', ['id' => $request->instructeur_id])
+                         ->with('success', 'Voertuig succesvol bijgewerkt.');
     }
 }
