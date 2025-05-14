@@ -39,11 +39,11 @@ class InstructeurController extends Controller
         return view('voertuigen.edit', compact('voertuig', 'typeVoertuigen'));
     }
 
-    public function updateVoertuig(Request $request, $id)
+    public function updateVoertuig(Request $request, $id, $voertuig)
     {
         // Update vehicle details using a stored procedure
         DB::statement('CALL UpdateVoertuig(?, ?, ?, ?, ?, ?)', [
-            $id,
+            $voertuig, // Pass the correct voertuig_id
             $request->type_voertuig_id,
             $request->type,
             $request->bouwjaar,
