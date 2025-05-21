@@ -7,7 +7,16 @@
     @if(isset($voertuig->instructeur_id))
         <form action="{{ route('voertuigen.update', ['id' => $voertuig->instructeur_id, 'voertuig' => $voertuig->id]) }}" method="POST">
             @csrf
-            <input type="hidden" name="instructeur_id" value="{{ $voertuig->instructeur_id }}">
+            <div class="mb-3">
+                <label for="instructeur_id" class="form-label">Instructeur</label>
+                <select name="instructeur_id" id="instructeur_id" class="form-select">
+                    @foreach ($instructeurs as $instructeur)
+                        <option value="{{ $instructeur->id }}" {{ $instructeur->id == $voertuig->instructeur_id ? 'selected' : '' }}>
+                            {{ $instructeur->naam }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
             <div class="mb-3">
                 <label for="type_voertuig_id" class="form-label">Type Voertuig</label>
                 <select name="type_voertuig_id" id="type_voertuig_id" class="form-select">

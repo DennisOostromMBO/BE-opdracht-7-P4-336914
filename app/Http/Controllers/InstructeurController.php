@@ -26,24 +26,25 @@ class InstructeurController extends Controller
 
     public function editVoertuig($id, $voertuig)
     {
-        // Fetch vehicle details and types using stored procedures
         $voertuig = DB::select('CALL GetVoertuigById(?)', [$voertuig])[0] ?? abort(404, 'Voertuig not found.');
-
-        // Ensure instructeur_id matches
-        if ($voertuig->instructeur_id != $id) {
-            abort(404, 'Voertuig does not belong to this instructeur.');
-        }
-
         $typeVoertuigen = DB::select('CALL GetAllTypeVoertuigen()');
+        $instructeurs = DB::select('CALL GetAllInstructeurs()');
 
-        return view('voertuigen.edit', compact('voertuig', 'typeVoertuigen'));
+        return view('voertuigen.edit', compact('voertuig', 'typeVoertuigen', 'instructeurs'));
     }
 
     public function updateVoertuig(Request $request, $id, $voertuig)
     {
-        // Update vehicle details using a stored procedure
-        DB::statement('CALL UpdateVoertuig(?, ?, ?, ?, ?, ?)', [
-            $voertuig, // Pass the correct voertuig_id
+        // First verify the vehicle exists and belongs to the instructor
+        $currentVoertuig = DB::select('CALL GetVoertuigById(?)', [$voertuig])[0] ?? abort(404);
+
+        if ($currentVoertuig->instructeur_id != $id) {
+            abort(403, 'This vehicle does not belong to this instructor');
+        }
+
+        DB::statement('CALL UpdateVoertuig(?, ?, ?, ?, ?, ?, ?)', [
+            $voertuig,
+            $request->instructeur_id,
             $request->type_voertuig_id,
             $request->type,
             $request->bouwjaar,
@@ -51,7 +52,8 @@ class InstructeurController extends Controller
             $request->kenteken
         ]);
 
-        return redirect()->route('instructeurs.voertuigen', ['id' => $request->instructeur_id])
+        // Redirect back to the original instructor's page
+        return redirect()->route('instructeurs.voertuigen', ['id' => $id])
                          ->with('success', 'Voertuig succesvol bijgewerkt.');
     }
 }
