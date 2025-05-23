@@ -33,7 +33,7 @@
             </div>
             <div class="mb-3">
                 <label for="bouwjaar" class="form-label">Bouwjaar</label>
-                <input type="date" name="bouwjaar" id="bouwjaar" class="form-control" value="{{ $voertuig->bouwjaar }}">
+                <input type="date" name="bouwjaar" id="bouwjaar" class="form-control" value="{{ $voertuig->bouwjaar }}" readonly>
             </div>
             <div class="mb-3">
                 <label for="brandstof" class="form-label">Brandstof</label>
