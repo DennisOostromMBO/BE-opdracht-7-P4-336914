@@ -14,6 +14,7 @@ return new class extends Migration
         DB::unprepared('DROP PROCEDURE IF EXISTS UpdateVoertuig');
         DB::unprepared('DROP PROCEDURE IF EXISTS GetInstructeurById');
         DB::unprepared('DROP PROCEDURE IF EXISTS GetAllTypeVoertuigen');
+        DB::unprepared('DROP PROCEDURE IF EXISTS AssignVoertuig');
 
         // Load the stored procedures from the SQL files
         $pathGetAllVoertuigen = database_path('sp/GetAllVoertuigen.sql');
@@ -30,6 +31,9 @@ return new class extends Migration
 
         $pathGetAllTypeVoertuigen = database_path('sp/GetAllTypeVoertuigen.sql');
         DB::unprepared(File::get($pathGetAllTypeVoertuigen));
+
+        $pathAssignVoertuig = database_path('sp/AssignVoertuig.sql');
+        DB::unprepared(File::get($pathAssignVoertuig));
     }
 
     public function down(): void
@@ -40,5 +44,6 @@ return new class extends Migration
         DB::unprepared('DROP PROCEDURE IF EXISTS UpdateVoertuig');
         DB::unprepared('DROP PROCEDURE IF EXISTS GetInstructeurById');
         DB::unprepared('DROP PROCEDURE IF EXISTS GetAllTypeVoertuigen');
+        DB::unprepared('DROP PROCEDURE IF EXISTS AssignVoertuig');
     }
 };

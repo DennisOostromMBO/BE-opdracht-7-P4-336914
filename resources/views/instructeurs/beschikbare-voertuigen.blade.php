@@ -1,13 +1,10 @@
-<!-- filepath: c:\Users\denni\Herd\be-opdracht-07\resources\views\instructeurs\voertuigen.blade.php -->
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
-    <h1>Door Instructeur gebruikte voertuigen</h1>
-    <p>Naam: {{ $instructeur->voornaam }} {{ $instructeur->tussenvoegsel }} {{ $instructeur->achternaam }}</p>
-    <p>Datum in dienst: {{ $instructeur->datum_in_dienst }}</p>
-    <p>Aantal sterren: {{ $instructeur->aantal_sterren }}</p>
-    <a href="{{ route('instructeurs.beschikbare-voertuigen', $instructeur->id) }}" class="btn btn-primary">Voertuig toevoegen</a>
+    <h1>Beschikbare voertuigen</h1>
+    <p>Voor instructeur: {{ $instructeur->voornaam }} {{ $instructeur->tussenvoegsel }} {{ $instructeur->achternaam }}</p>
+    
     <table class="table table-bordered mt-3">
         <thead>
             <tr>
@@ -17,7 +14,7 @@
                 <th>Bouwjaar</th>
                 <th>Brandstof</th>
                 <th>Rijbewijscategorie</th>
-                <th>Wijzigen</th>
+                <th>Toevoegen</th>
             </tr>
         </thead>
         <tbody>
@@ -30,11 +27,15 @@
                     <td>{{ $voertuig->Brandstof }}</td>
                     <td>{{ $voertuig->Rijbewijscategorie }}</td>
                     <td>
-                        <a href="{{ route('voertuigen.edit', ['id' => $instructeur->id, 'voertuig' => $voertuig->id]) }}" class="btn btn-warning">✏️</a>
+                        <form action="{{ route('voertuigen.assign', ['id' => $instructeur->id, 'voertuig' => $voertuig->id]) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-success">➕ Toevoegen</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+    <a href="{{ route('instructeurs.voertuigen', $instructeur->id) }}" class="btn btn-primary">Terug</a>
 </div>
 @endsection

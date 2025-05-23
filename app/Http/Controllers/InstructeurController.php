@@ -56,4 +56,23 @@ class InstructeurController extends Controller
         return redirect()->route('instructeurs.voertuigen', ['id' => $id])
                          ->with('success', 'Voertuig succesvol bijgewerkt.');
     }
+
+    public function assignVoertuig(Request $request, $id, $voertuig)
+    {
+        DB::statement('CALL AssignVoertuig(?, ?)', [
+            $voertuig,
+            $id
+        ]);
+
+        return redirect()->route('instructeurs.voertuigen', ['id' => $id])
+                        ->with('success', 'Voertuig succesvol toegewezen.');
+    }
+
+    public function beschikbareVoertuigen($id)
+    {
+        $instructeur = DB::select('CALL GetInstructeurById(?)', [$id])[0] ?? abort(404, 'Instructeur not found.');
+        $voertuigen = DB::select('CALL GetAvailableVoertuigen()');
+
+        return view('instructeurs.beschikbare-voertuigen', compact('instructeur', 'voertuigen'));
+    }
 }
